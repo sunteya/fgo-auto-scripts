@@ -81,9 +81,22 @@ var stopExecution = function (window, execution) {
   window.action.setText('开始运行')
 }
 
+const Attack = readImage('./assets/attack.jpg')
+
+function findAttack() {
+  while (!findButton(Attack, {maxTimes:1})) {
+      sleep1(100)
+  }
+  toast('进攻')
+  return true
+
+}
+
 exports.click = click1
 exports.sleep = sleep1
 exports.readImage = readImage
 exports.findButton = findButton
 exports.stopExecution = stopExecution
 exports.swipe = swipe1
+exports.Attack = Attack
+exports.findAttack = findAttack

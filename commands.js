@@ -4,6 +4,8 @@ setScreenMetrics(1080, 2340)
 
 var click2 = utils.click
 var sleep2 = utils.sleep
+var Attack = utils.Attack
+var findAttack = utils.findAttack
 
 const SkillY = 846
 const MasterSkillY = 479
@@ -67,6 +69,7 @@ function useMasterSkill(i) {
 function use(t) {
   var i = t[0]
   var avatar = t[1]
+  findAttack()
   click2(i[0],i[1], true)
   sleep2(200)
   // click2(Confirm[0],Confirm[1], true)
@@ -89,7 +92,7 @@ function changeServant(t) {
   click2(t[1][0], t[1][1], true)
   sleep2(100)
   click2(ChangeConfirm[0], ChangeConfirm[1], true)
-  sleep2(6000)
+  sleep2(4000)
 }
 
 function nirvana (t) {
@@ -107,6 +110,7 @@ function normalFight (t) {
   // sleep1(500)
   // click1(Card2[0],Card2[1], true)
   // sleep1(20000)
+  console.log('normalFight', t)
   click1(t[0][0], t[0][1], true)
   sleep1(t[1])
 }
@@ -136,8 +140,8 @@ const PointList = {
   'b:1,0': CardSP1,
   'b:2,0': CardSP2,
   'b:3,0': CardSP3,
-  'a:1:0': Card1,
-  'a:2:0': Card2
+  'a:1,0': Card1,
+  'a:2,0': Card2
 }
 
 const AvatarList = {

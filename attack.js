@@ -35,7 +35,8 @@ toast(apple ? '吃苹果' : '不吃苹果')
 
 const NextImage =  readImage('./assets/next.jpg')
 const GoldAppleImage = readImage('./assets/gold_apple.jpg')
-const Attack = readImage('./assets/attack.jpg')
+var Attack = utils.Attack
+var findAttack = utils.findAttack
 
 // function fight() {
 //     click1(Battle[0],Battle[1], true)
