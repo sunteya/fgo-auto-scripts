@@ -53,7 +53,7 @@ var findAttack = utils.findAttack
 function useCustom(t) {
     const result = getCommands(t).result
     result.forEach((r) => {
-        findAttack()
+        findAttack(true)
         r.forEach((u) => {
             u.f(u.p)
         })

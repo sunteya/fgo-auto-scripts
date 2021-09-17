@@ -81,13 +81,13 @@ var stopExecution = function (window, execution) {
   window.action.setText('开始运行')
 }
 
-const Attack = readImage('./assets/attack.jpg')
-
-function findAttack() {
+function findAttack(display) {
   while (!findButton(Attack, {maxTimes:1})) {
       sleep1(100)
   }
-  toast('进攻')
+  if (display) {
+    toast('进攻')
+  }
   return true
 
 }
@@ -98,5 +98,5 @@ exports.readImage = readImage
 exports.findButton = findButton
 exports.stopExecution = stopExecution
 exports.swipe = swipe1
-exports.Attack = Attack
+exports.Attack = readImage('./assets/attack.jpg')
 exports.findAttack = findAttack
