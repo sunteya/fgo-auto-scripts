@@ -46,6 +46,15 @@ const ChangeS5 = [1703, ChangeY]
 const ChangeS6 = [2008, ChangeY]
 const ChangeConfirm = [1353, 958]
 
+// 宝具
+const CardSP1 = [799,340]
+const CardSP2 = [1199,340]
+const CardSP3 = [1500,340]
+
+// 指令卡
+const Card1= [275,650]
+const Card2 = [655,650]
+
 function useMasterSkill(i) {
   click2(MasterSkillStart[0], MasterSkillStart[1], true)
   sleep2(150)
@@ -57,10 +66,10 @@ function use(t) {
   var avatar = t[1]
   click2(i[0],i[1], true)
   sleep2(200)
-  click2(Confirm[0],Confirm[1], true)
+  // click2(Confirm[0],Confirm[1], true)
   sleep2(100)
   click2(avatar[0],avatar[1], true)
-  sleep2(3000)
+  sleep2(3500)
 }
 
 // t: [from, to]
@@ -77,13 +86,35 @@ function changeServant(t) {
   click2(t[1][0], t[1][1], true)
   sleep2(100)
   click2(ChangeConfirm[0], ChangeConfirm[1], true)
-  sleep2(3000)
+  sleep2(6000)
+}
+
+function nirvana (t) {
+  click1(t[0][0], t[0][1], true)
+  sleep1(300)
+}
+
+function openFight() {
+  click1(Battle[0],Battle[1], true)
+  sleep1(2500)
+}
+
+function normalFight (t) {
+  // click1(Card1[0],Card1[1], true)
+  // sleep1(500)
+  // click1(Card2[0],Card2[1], true)
+  // sleep1(20000)
+  click1(t[0][0], t[0][1], true)
+  sleep1(t[1])
 }
 
 const CommandList = {
   s: use,
   m: useMasterSkill,
-  c: changeServant
+  c: changeServant,
+  b: nirvana,
+  o: openFight,
+  a: normalFight
 }
 
 const PointList = {
@@ -98,7 +129,12 @@ const PointList = {
   's:3,3': C3S3,
   'm:1,0': MasterSkill1,
   'm:2,0': MasterSkill2,
-  'm:3,0': MasterSkill3
+  'm:3,0': MasterSkill3,
+  'b:1,0': CardSP1,
+  'b:2,0': CardSP2,
+  'b:3,0': CardSP3,
+  'a:1:0': Card1,
+  'a:2:0': Card2
 }
 
 const AvatarList = {
@@ -123,6 +159,10 @@ const translate = function(i) {
       return '从者 ' + i[2] + ' 技能 ' + i[3] + ' 给 ' + (i[4] === '0' ? 2 : i[4]) + ' 从者\n'
     case 'm':
       return '御主技能 ' + i[2] + '给 ' + (i[4] === '0' ? 2 : i[4]) + ' 从者\n'
+    case 'b':
+      return '宝具 ' + i[2]
+    case 'a':
+      return '攻击指令卡 ' + i[2]
     case 'c':
       return '换人 从者 ' + i[2] + '与 ' + i[3] + ' 交换\n'
   }
@@ -151,6 +191,7 @@ module.exports = function (text) {
     result.push([])
 
     // 解析命令
+    var attackCardCount = 0
     turns[i].split('\n').map(i => i.trim()).filter((c) => !!c).forEach(function(command) {
       const c = /^(\w):(\d),(\d),(\d)$/.exec(command)
       if (!c) {
@@ -160,10 +201,29 @@ module.exports = function (text) {
       }
       resultText += translate(c)
       const _r = {f: CommandList[c[1]]}
-      if (c[1] !== 'c') {
-        _r['p'] = [PointList[c[0].slice(0,-2)], AvatarList[c[4]]]
-      } else {
-        _r['p'] =  [ChangeList[c[2]], ChangeList[c[3]]]
+      switch(c[1]) {
+        case 'c':
+          _r['p'] =  [ChangeList[c[2]], ChangeList[c[3]]]
+        case 'a':
+          if (attackCardCount >= 3){
+            toast('错误的指令')
+            console.log('指令错误', command)
+            return resultText, result
+          }
+          if (attackCardCount <= 0) {
+            // 打开攻击界面
+            result[i].push({
+              f: openFight,
+              p: []
+            })
+          }
+          attackCardCount ++
+          _r['p'] =  [PointList[c[0].slice(0,-2)], attackCardCount == 3 ? 20000 : 300] // 攻击指令卡，停顿时间
+          break
+        case 'b':
+          attackCardCount ++ //宝具卡
+        default:
+          _r['p'] =  [PointList[c[0].slice(0,-2)], AvatarList[c[4]]]
       }
       result[i].push(_r)
     })

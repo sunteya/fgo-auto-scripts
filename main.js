@@ -96,6 +96,17 @@ ui.layout(
                                     <spinner id="changeTo" entries="从者4|从者5|从者6"></spinner>
                                     <button id="change">换人</button>
                                 </horizontal>
+                                <horizontal>
+                                    <text>宝具</text>
+                                    <button id="b1s1" w="70">宝具1</button>
+                                    <button id="b1s2" w="70">宝具2</button>
+                                    <button id="b1s3" w="70">宝具3</button>
+                                </horizontal>
+                                <horizontal>
+                                    <text>攻击指令卡</text>
+                                    <button id="a1s1" w="70">指令卡1</button>
+                                    <button id="a1s2" w="70">指令卡2</button>
+                                </horizontal>
                                 <button id="nextTurn">Next Turn</button>
 
                         </vertical>
@@ -293,6 +304,30 @@ ui.m1s3.click(function() {
     const i = ui.mto.getSelectedItemPosition()
     ui.custom.setText(ui.custom.text() + '\n' + 'm:3,0,' + i)
 })
+
+// 宝具
+ui.b1s1.click(function() {
+    ui.custom.setText(ui.custom.text() + '\n' + 'b:1,0,0')
+})
+
+ui.b1s2.click(function() {
+    ui.custom.setText(ui.custom.text() + '\n' + 'b:2,0,0')
+})
+
+ui.b1s3.click(function() {
+    const i = ui.mto.getSelectedItemPosition()
+    ui.custom.setText(ui.custom.text() + '\n' + 'b:3,0,0')
+})
+
+ui.a1s1.click(function() {
+    ui.custom.setText(ui.custom.text() + '\n' + 'a:1,0,0')
+})
+
+ui.a1s2.click(function() {
+    const i = ui.mto.getSelectedItemPosition()
+    ui.custom.setText(ui.custom.text() + '\n' + 'a:2,0,0')
+})
+
 
 ui.change.click(function() {
     const i = ui.changeFrom.getSelectedItemPosition() + 1 // 1 2 3
