@@ -55,6 +55,9 @@ const CardSP3 = [1500,340]
 const Card1= [275,650]
 const Card2 = [655,650]
 
+// 开始攻击
+const Battle = [1780,750]
+
 function useMasterSkill(i) {
   click2(MasterSkillStart[0], MasterSkillStart[1], true)
   sleep2(150)
@@ -160,9 +163,9 @@ const translate = function(i) {
     case 'm':
       return '御主技能 ' + i[2] + '给 ' + (i[4] === '0' ? 2 : i[4]) + ' 从者\n'
     case 'b':
-      return '宝具 ' + i[2]
+      return '宝具 ' + i[2] + '\n'
     case 'a':
-      return '攻击指令卡 ' + i[2]
+      return '攻击指令卡 ' + i[2] + '\n'
     case 'c':
       return '换人 从者 ' + i[2] + '与 ' + i[3] + ' 交换\n'
   }
@@ -204,6 +207,7 @@ module.exports = function (text) {
       switch(c[1]) {
         case 'c':
           _r['p'] =  [ChangeList[c[2]], ChangeList[c[3]]]
+          break
         case 'a':
           if (attackCardCount >= 3){
             toast('错误的指令')
