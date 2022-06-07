@@ -38,18 +38,6 @@ const GoldAppleImage = readImage('./assets/gold_apple.jpg')
 var Attack = utils.Attack
 var findAttack = utils.findAttack
 
-// function fight() {
-//     click1(Battle[0],Battle[1], true)
-//     sleep1(1500)
-//     click1(CardSP[0],CardSP[1], true)
-//     sleep1(500)
-//     click1(Card1[0],Card1[1], true)
-//     sleep1(500)
-//     click1(Card2[0],Card2[1], true)
-//     sleep1(20000)
-// }
-
-
 function useCustom(t) {
     const result = getCommands(t).result
     result.forEach((r) => {
@@ -98,21 +86,11 @@ function clickRefresh() {
     findServant('caster')
 }
 
-
-function findAttack() {
-    while (!findButton(Attack, {maxTimes:1})) {
-        
-    }
-    toast('进攻')
-    return true
-  
-}
-
 function nextTurn() {
     toast('完成')
     let p = null
     while (!p) {
-        click1(1920,993, true)
+        click1(1820,993, true)
         sleep1(300)
         p = findButton(NextImage, {maxTimes:1})
     }
