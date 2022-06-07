@@ -106,6 +106,7 @@ ui.layout(
                                     <text>攻击指令卡</text>
                                     <button id="a1s1" w="70">指令卡1</button>
                                     <button id="a1s2" w="70">指令卡2</button>
+                                    <button id="a1s3" w="70">指令卡3</button>
                                 </horizontal>
                                 <button id="nextTurn">Next Turn</button>
 
@@ -328,6 +329,10 @@ ui.a1s2.click(function() {
     ui.custom.setText(ui.custom.text() + '\n' + 'a:2,0,0')
 })
 
+ui.a1s3.click(function() {
+    const i = ui.mto.getSelectedItemPosition()
+    ui.custom.setText(ui.custom.text() + '\n' + 'a:3,0,0')
+})
 
 ui.change.click(function() {
     const i = ui.changeFrom.getSelectedItemPosition() + 1 // 1 2 3

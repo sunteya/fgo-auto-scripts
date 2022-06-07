@@ -54,11 +54,12 @@ const CardSP2 = [1199,340]
 const CardSP3 = [1500,340]
 
 // 指令卡
-const Card1= [275,650]
-const Card2 = [655,650]
+const Card1= [443,764]
+const Card2 = [790,764]
+const Card3 = [1199,764]
 
 // 开始攻击
-const Battle = [1780,750]
+const Battle = [2010,910]
 
 function useMasterSkill(i) {
   click2(MasterSkillStart[0], MasterSkillStart[1], true)
@@ -72,7 +73,7 @@ function use(t) {
   findAttack()
   click2(i[0],i[1], true)
   sleep2(200)
-  // click2(Confirm[0],Confirm[1], true)
+  click2(Confirm[0],Confirm[1], true)
   sleep2(100)
   click2(avatar[0],avatar[1], true)
   sleep2(3500)
@@ -95,7 +96,7 @@ function changeServant(t) {
   sleep2(4000)
 }
 
-function nirvana (t) {
+function nirvana(t) {
   click1(t[0][0], t[0][1], true)
   sleep1(300)
 }
@@ -105,14 +106,18 @@ function openFight() {
   sleep1(2500)
 }
 
-function normalFight (t) {
+function normalFight(t) {
   // click1(Card1[0],Card1[1], true)
   // sleep1(500)
   // click1(Card2[0],Card2[1], true)
   // sleep1(20000)
   console.log('normalFight', t)
   click1(t[0][0], t[0][1], true)
-  sleep1(t[1])
+  sleep1(300)
+}
+
+function waiting(t) {
+  sleep1(t[0])
 }
 
 const CommandList = {
@@ -121,7 +126,8 @@ const CommandList = {
   c: changeServant,
   b: nirvana,
   o: openFight,
-  a: normalFight
+  a: normalFight,
+  w: waiting
 }
 
 const PointList = {
@@ -141,7 +147,8 @@ const PointList = {
   'b:2,0': CardSP2,
   'b:3,0': CardSP3,
   'a:1,0': Card1,
-  'a:2,0': Card2
+  'a:2,0': Card2,
+  'a:3,0': Card3
 }
 
 const AvatarList = {
@@ -208,33 +215,24 @@ module.exports = function (text) {
       }
       resultText += translate(c)
       const _r = {f: CommandList[c[1]]}
-      switch(c[1]) {
-        case 'c':
-          _r['p'] =  [ChangeList[c[2]], ChangeList[c[3]]]
-          break
-        case 'a':
-          if (attackCardCount >= 3){
-            toast('错误的指令')
-            console.log('指令错误', command)
-            return resultText, result
-          }
-          if (attackCardCount <= 0) {
-            // 打开攻击界面
-            result[i].push({
-              f: openFight,
-              p: []
-            })
-          }
-          attackCardCount ++
-          _r['p'] =  [PointList[c[0].slice(0,-2)], attackCardCount == 3 ? 20000 : 300] // 攻击指令卡，停顿时间
-          break
-        case 'b':
-          attackCardCount ++ //宝具卡
-        default:
-          _r['p'] =  [PointList[c[0].slice(0,-2)], AvatarList[c[4]]]
+      if (c[1] == 's' || c[1] == 'm') {
+        _r['p'] = [PointList[c[0].slice(0,-2)], AvatarList[c[4]]]
+      } else if (c[1] == 'c') {
+        _r['p'] =  [ChangeList[c[2]], ChangeList[c[3]]]
+      } else if (c[1] == 'b' || c[1] == 'a') {
+        attackCardCount++
+        _r['p'] =  [PointList[c[0].slice(0,-2)]] // 攻击指令卡，停顿时间
       }
+
+      // 打开攻击界面
+      if (attackCardCount == 1) {
+        result[i].push({ f: openFight, p: [] })
+      }
+
       result[i].push(_r)
     })
+
+    result[i].push({ f: waiting, p: [20000] })
   }
 
   return {
